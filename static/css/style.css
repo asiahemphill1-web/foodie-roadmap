@@ -258,14 +258,17 @@ textarea:focus {
     padding: 10px 0;
 }
 
+/* ✅ FIXED SECTION */
 .items-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
+    align-items: start; /* 🔥 prevents stretching */
 }
 
 .food-card {
     overflow: hidden;
+    align-self: start; /* 🔥 ensures each card grows independently */
 }
 
 .card-summary {
@@ -350,10 +353,6 @@ textarea:focus {
     width: fit-content;
 }
 
-.type-pill {
-    text-transform: uppercase;
-}
-
 .type-pill.recipe {
     background: #ffe0ec;
     color: var(--rose);
@@ -367,7 +366,6 @@ textarea:focus {
 .status-label {
     background: var(--pink-bg);
     color: var(--muted);
-    margin: 0;
 }
 
 .favorite-button {
@@ -376,139 +374,12 @@ textarea:focus {
     color: var(--hot-pink);
     cursor: pointer;
     font-weight: 900;
-    font-size: 0.95rem;
-}
-
-.cuisine-label {
-    color: var(--hot-pink);
-    font-weight: 900;
-    margin: 0;
 }
 
 .detail-block,
 .notes {
-    color: var(--muted);
-    line-height: 1.45;
     padding: 13px;
     background: var(--pink-bg);
     border: 1px solid #ffd0df;
     border-radius: 16px;
-}
-
-.detail-block strong,
-.notes strong {
-    display: block;
-    color: var(--rose);
-    margin-bottom: 5px;
-}
-
-.detail-block p,
-.notes p {
-    margin: 0;
-    overflow-wrap: anywhere;
-}
-
-.detail-block a {
-    color: var(--rose);
-    font-weight: 800;
-    text-decoration: underline;
-}
-
-.card-actions {
-    margin-top: 4px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-}
-
-.card-actions a {
-    color: var(--rose);
-    font-weight: 900;
-}
-
-.card-actions button {
-    color: var(--deep-red);
-    background: var(--pink-light);
-}
-
-.form-card {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 34px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.checkbox-label input {
-    width: auto;
-}
-
-.empty-card {
-    grid-column: 1 / -1;
-    padding: 38px;
-    text-align: center;
-}
-
-.message-area {
-    margin-bottom: 18px;
-}
-
-.message {
-    padding: 14px 16px;
-    border-radius: 18px;
-    margin-bottom: 10px;
-    font-weight: 800;
-}
-
-.message.success {
-    background: #ffe0ec;
-    color: var(--rose);
-}
-
-.message.error {
-    background: #ffd6df;
-    color: var(--deep-red);
-}
-
-.site-footer {
-    text-align: center;
-    color: var(--muted);
-    padding: 28px;
-}
-
-@media (max-width: 900px) {
-    .stats-grid,
-    .items-grid,
-    .filter-form {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 640px) {
-    .nav-bar,
-    .nav-links,
-    .form-actions,
-    .card-summary,
-    .card-topline,
-    .card-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .hero-card {
-        padding: 30px;
-    }
-
-    .stats-grid,
-    .items-grid,
-    .filter-form {
-        grid-template-columns: 1fr;
-    }
-
-    .summary-rating {
-        text-align: left;
-    }
 }
