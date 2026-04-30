@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie Roadmap</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="nav-bar">
+            <a class="logo" href="{{ url_for('home') }}">
+                <span class="logo-mark">FR</span>
+                <span class="logo-text">Foodie Roadmap</span>
+            </a>
+            <div class="nav-links">
+                <a class="dashboard-link" href="{{ url_for('home') }}">Dashboard</a>
+                <a class="button-link" href="{{ url_for('add_item') }}">Add a foodie find</a>
+                <a class="sample-link" href="{{ url_for('seed_data') }}">Load sample data</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <section class="message-area">
+            {% for category, message in messages %}
+            <div class="message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </section>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Built for Foodie Lovers and Friends.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>
