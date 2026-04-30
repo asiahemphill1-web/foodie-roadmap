@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="form-card">
+    <div class="form-heading">
+        <p class="eyebrow">Foodie Roadmap</p>
+        <h1>{{ form_title }}</h1>
+        <p>Save a recipe idea or restaurant in a clear layout. Ratings should only be added after you have cooked the recipe or visited the restaurant.</p>
+    </div>
+
+    <form method="POST" class="item-form">
+        <label>
+            Title
+            <input type="text" name="title" value="{{ item.title if item else '' }}" placeholder="Example: Oxtail pasta or brunch spot" required>
+        </label>
+
+        <label>
+            Type
+            <select name="item_type" required>
+                <option value="">Choose one</option>
+                <option value="recipe" {% if item and item.item_type == 'recipe' %}selected{% endif %}>Recipe</option>
+                <option value="restaurant" {% if item and item.item_type == 'restaurant' %}selected{% endif %}>Restaurant</option>
+            </select>
+        </label>
+
+        <label>
+            Cuisine category
+            <input type="text" name="cuisine" value="{{ item.cuisine if item else '' }}" placeholder="Southern Comfort Food, Mexican, Italian, Jamaican..." required>
+        </label>
+
+        <label>
+            Ingredients for recipes
+            <textarea name="ingredients" rows="4" placeholder="Example: chicken, garlic, peppers, rice, coconut milk">{{ item.ingredients if item else '' }}</textarea>
+        </label>
+
+        <label>
+            Location
+            <input type="text" name="location" value="{{ item.location if item else '' }}" placeholder="Example: Atlanta, GA or 123 Main Street">
+        </label>
+
+        <label>
+            Link
+            <input type="url" name="link" value="{{ item.link if item else '' }}" placeholder="https://example.com">
+        </label>
+
+        <label class="checkbox-label">
+            <input type="checkbox" name="has_tried" {% if item and item.has_tried %}checked{% endif %}>
+            I have tried this recipe or visited this restaurant
+        </label>
+
+        <label>
+            Rating after trying or visiting
+            <select name="rating">
+                {% for number in range(0, 6) %}
+                    <option value="{{ number }}" {% if item and item.rating == number %}selected{% endif %}>{{ number }} {% if number == 0 %}- Not rated yet{% endif %}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label>
+            Notes
+            <textarea name="notes" rows="5" placeholder="What do you want to remember about this?">{{ item.notes if item else '' }}</textarea>
+        </label>
+
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_favorite" {% if item and item.is_favorite %}checked{% endif %}>
+            Mark as a favorite
+        </label>
+
+        <div class="form-actions">
+            <button class="primary-button" type="submit">Save</button>
+            <a class="secondary-button" href="{{ url_for('home') }}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
