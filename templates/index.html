@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Recipe and restaurant organizer</p>
+        <h1>Your personal roadmap to staying in and cheffing it up or hitting the town for new taste buds!</h1>
+        <p class="hero-text">Save recipes and restaurants by cuisine, track ingredients, keep locations and links organized, and only rate items after you have actually tried them.</p>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <div class="stat-card">
+        <span>{{ stats.total }}</span>
+        <p>Total saved</p>
+    </div>
+    <div class="stat-card">
+        <span>{{ stats.recipes }}</span>
+        <p>Recipes</p>
+    </div>
+    <div class="stat-card">
+        <span>{{ stats.restaurants }}</span>
+        <p>Restaurants</p>
+    </div>
+    <div class="stat-card">
+        <span>{{ stats.favorites }}</span>
+        <p>Favorites</p>
+    </div>
+</section>
+
+<section class="filter-card">
+    <form method="GET" action="{{ url_for('home') }}" class="filter-form">
+        <label>
+            Search
+            <input type="text" name="search" value="{{ search_text }}" placeholder="Search title, cuisine, ingredients, notes...">
+        </label>
+
+        <label>
+            Type
+            <select name="type">
+                <option value="all" {% if selected_type == 'all' %}selected{% endif %}>All</option>
+                <option value="recipe" {% if selected_type == 'recipe' %}selected{% endif %}>Recipes</option>
+                <option value="restaurant" {% if selected_type == 'restaurant' %}selected{% endif %}>Restaurants</option>
+            </select>
+        </label>
+
+        <label>
+            Cuisine
+            <select name="cuisine">
+                <option value="all" {% if selected_cuisine == 'all' %}selected{% endif %}>All cuisines</option>
+                {% for cuisine in cuisines %}
+                    <option value="{{ cuisine }}" {% if selected_cuisine == cuisine %}selected{% endif %}>{{ cuisine }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <button type="submit">Apply filters</button>
+        <a class="clear-link" href="{{ url_for('home') }}">Clear</a>
+    </form>
+</section>
+
+<section class="items-grid">
+    {% if items %}
+        {% for item in items %}
+            <details class="food-card">
+                <summary class="card-summary">
+                    <div class="summary-main">
+                        <span class="type-pill {{ item.item_type }}">{{ item.item_type }}</span>
+                        <h2>{{ item.title }}</h2>
+                        <p class="cuisine-label">{{ item.cuisine }}</p>
+                    </div>
+                    <div class="summary-rating">
+                        <span>{{ item.stars() }}</span>
+                        <small>Click for details</small>
+                    </div>
+                </summary>
+
+                <div class="card-details">
+                    <div class="card-topline">
+                        <p class="status-label">{{ item.experience_label() }}</p>
+                        <form method="POST" action="{{ url_for('toggle_favorite', item_id=item.item_id) }}">
+                            <button class="favorite-button" type="submit" title="Favorite">
+                                {% if item.is_favorite %}♥ Favorite{% else %}♡ Favorite{% endif %}
+                            </button>
+                        </form>
+                    </div>
+
+                    {% if item.ingredients and item.item_type == 'recipe' %}
+                        <div class="detail-block">
+                            <strong>Ingredients</strong>
+                            <p>{{ item.ingredients }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if item.location %}
+                        <div class="detail-block">
+                            <strong>Location</strong>
+                            <p>{{ item.location }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if item.link %}
+                        <div class="detail-block">
+                            <strong>Link</strong>
+                            <p><a href="{{ item.link }}" target="_blank">{{ item.link }}</a></p>
+                        </div>
+                    {% endif %}
+
+                    {% if item.notes %}
+                        <div class="notes">
+                            <strong>Notes</strong>
+                            <p>{{ item.notes }}</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-actions">
+                        <a href="{{ url_for('edit_item', item_id=item.item_id) }}">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_item', item_id=item.item_id) }}" data-confirm-delete>
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </details>
+        {% endfor %}
+    {% else %}
+        <div class="empty-card">
+            <h2>No foodie finds yet.</h2>
+            <p>Add your first recipe or restaurant to start building your roadmap.</p>
+            <a class="primary-button" href="{{ url_for('add_item') }}">Add one now</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
